@@ -5,12 +5,12 @@ import { getFirestore, doc, getDoc, getDocs, collection, query, where, addDoc, s
 // --- FIREBASE CONFIGURATION ---
 // USER: Replace this with your actual Firebase config from Firebase Console
 const firebaseConfig = {
-    apiKey: "AIzaSyCzfbotjRCNYM2j_wRwICU03cx6EbKjWfE",
-    authDomain: "lionengine.firebaseapp.com",
-    projectId: "lionengine",
-    storageBucket: "lionengine.firebasestorage.app",
-    messagingSenderId: "449107794375",
-    appId: "1:449107794375:web:57124ecae474162b0de1e2"
+  apiKey: "AIzaSyDLfcXVkIklV34wDetT1qtrbNs096Jq-Bk",
+  authDomain: "sahand-f9388.firebaseapp.com",
+  projectId: "sahand-f9388",
+  storageBucket: "sahand-f9388.firebasestorage.app",
+  messagingSenderId: "327521733346",
+  appId: "1:327521733346:web:eb4a97c5c64404a180ecbb",
 };
 
 const app = initializeApp(firebaseConfig);
