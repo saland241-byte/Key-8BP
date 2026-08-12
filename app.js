@@ -70,8 +70,8 @@ onAuthStateChanged(auth, async (user) => {
             mainDashboard.classList.remove('hidden');
 
             // Hardcoded check for your specific UID
-            if (user.uid === "FmPmcspzqzPHsYFlEToUgD2ATKj1") {
-                currentUserData = { name: "Lion Admin", role: "admin" };
+            if (user.uid === "UdYeXxKZQ1NMfUNiWXwEqGCm1dC3") {
+                currentUserData = { name: "Hemn Admin, role: "admin" };
                 setupDashboard();
                 return;
             }
