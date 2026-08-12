@@ -70,8 +70,8 @@ onAuthStateChanged(auth, async (user) => {
             mainDashboard.classList.remove('hidden');
 
             // Hardcoded check for your specific UID
-            if (user.uid === "FmPmcspzqzPHsYFlEToUgD2ATKj1") {
-                currentUserData = { name: "Lion Admin", role: "admin" };
+            if (user.uid === "YkNc42BoSmP8aeYiyr7wPLrZLAI3") {
+                currentUserData = { name: "Hemn Admin, role: "admin" };
                 setupDashboard();
                 return;
             }
@@ -199,7 +199,7 @@ function generateKeyString() {
         for (let i = 0; i < 5; i++) s += chars.charAt(Math.floor(Math.random() * chars.length));
         return s;
     };
-    return `LIONX-${segment()}-${segment()}-${segment()}`;
+    return `HEMNMOOD-${segment()}-${segment()}-${segment()}`;
 }
 
 // --- DATA LOADING ---
