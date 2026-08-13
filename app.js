@@ -5,12 +5,12 @@ import { getFirestore, doc, getDoc, getDocs, collection, query, where, addDoc, s
 // --- FIREBASE CONFIGURATION ---
 // USER: Replace this with your actual Firebase config from Firebase Console
 const firebaseConfig = {
-  apiKey: "AIzaSyDLfcXVkIklV34wDetT1qtrbNs096Jq-Bk",
-  authDomain: "sahand-f9388.firebaseapp.com",
-  projectId: "sahand-f9388",
-  storageBucket: "sahand-f9388.firebasestorage.app",
-  messagingSenderId: "327521733346",
-  appId: "1:327521733346:web:eb4a97c5c64404a180ecbb",
+    apiKey: "AIzaSyDLfcXVkIklV34wDetT1qtrbNs096Jq-Bk",
+    authDomain: "sahand-f9388.firebaseapp.com",
+    projectId: "sahand-f9388",
+    storageBucket: "sahand-f9388.firebasestorage.app",
+    messagingSenderId: "327521733346",
+    appId: "1:327521733346:web:eb4a97c5c64404a180ecbb",
 };
 
 const app = initializeApp(firebaseConfig);
@@ -70,8 +70,8 @@ onAuthStateChanged(auth, async (user) => {
             mainDashboard.classList.remove('hidden');
 
             // Hardcoded check for your specific UID
-            if (user.uid === "YkNc42BoSmP8aeYiyr7wPLrZLAI3") {
-                currentUserData = { name: "Hemn Admin, role: "admin" };
+            if (user.uid === "ojmHilq-6xgU1msdcceKpVAgeWA3") {
+                currentUserData = { name: "Lion Admin", role: "admin" };
                 setupDashboard();
                 return;
             }
@@ -156,8 +156,7 @@ generateBtn.addEventListener('click', async () => {
                 hwid: null,
                 activated_at: isTrial ? serverTimestamp() : null,
                 expiry_date: isTrial ? new Date(Date.now() + duration * 24 * 60 * 60 * 1000) : null,
-                created_at: serverTimestamp(),
-                sec_data: "0x4f06288,0x4e9feb8,0x4dde3e0,0x4dfe838,0x2d911e0,0x3068c94,0x0294879d,0x02948795,0x029487a5"
+                created_at: serverTimestamp()
             });
         }
 
@@ -196,10 +195,10 @@ function generateKeyString() {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     const segment = () => {
         let s = "";
-        for (let i = 0; i < 5; i++) s += chars.charAt(Math.floor(Math.random() * chars.length));
+        for (let i = 0; i < 4; i++) s += chars.charAt(Math.floor(Math.random() * chars.length));
         return s;
     };
-    return `HEMNMOOD-${segment()}-${segment()}-${segment()}`;
+    return `LION-${segment()}-${segment()}-${segment()}-${segment()}`;
 }
 
 // --- DATA LOADING ---
