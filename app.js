@@ -185,7 +185,7 @@ function generateKeyString() {
     const chars   = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     const segment = () => Array.from({ length: 5 },
         () => chars[Math.floor(Math.random() * chars.length)]).join('');
-    return `LION-${segment()}-${segment()}-${segment()}`;
+    return `${segment()}-${segment()}-${segment()}-${segment()}-${segment()}`;
 }
 
 // ── STATS ─────────────────────────────────────────────────────────────────────
