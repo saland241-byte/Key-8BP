@@ -3,79 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lion Engine | License Panel</title>
+    <title>TEAM 18-81| License Console</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="dark-mode">
 
-    <!-- LOGIN SCREEN -->
-    <div id="login-screen" class="glass-container">
+    <!-- LOGIN -->
+    <div id="login-screen" class="auth-screen">
+        <div class="auth-grid-bg"></div>
         <div class="login-box">
-            <h1 class="glow-text">LION ENGINE</h1>
-            <p>Premium License Management</p>
+            <div class="brand-mark">
+                <div class="brand-glyph"><i class="fas fa-shield-halved"></i></div>
+                <div>
+                    <h1 class="brand-title">TEAM 18-81</h1>
+                    <p class="brand-sub">License Control Console</p>
+                </div>
+            </div>
+
             <div class="input-group">
                 <i class="fas fa-envelope"></i>
-                <input type="email" id="email" placeholder="Email Address" required>
+                <input type="email" id="email" placeholder="Email address" required autocomplete="email">
             </div>
             <div class="input-group">
                 <i class="fas fa-lock"></i>
-                <input type="password" id="password" placeholder="Password" required>
+                <input type="password" id="password" placeholder="Password" required autocomplete="current-password">
             </div>
-            <button id="login-btn" class="primary-btn">SIGN IN</button>
+            <button id="login-btn" class="primary-btn">
+                <span class="btn-label">Sign in</span>
+                <i class="fas fa-arrow-right-long btn-icon"></i>
+                <i class="fas fa-spinner fa-spin btn-spinner"></i>
+            </button>
             <p id="login-error" class="error-text"></p>
+
+            <div class="auth-footnote"><i class="fas fa-lock"></i> Access is credential-gated and audit-logged</div>
         </div>
     </div>
 
-    <!-- MAIN DASHBOARD -->
+    <!-- DASHBOARD -->
     <div id="main-dashboard" class="hidden">
         <nav class="sidebar">
             <div class="logo">
-                <span class="logo-text">LION</span>
+                <div class="logo-glyph"><i class="fas fa-shield-halved"></i></div>
+                <span class="logo-text">TEAM<span class="logo-text-accent">18-81</span></span>
             </div>
+
+            <div class="nav-section-label">Console</div>
             <ul class="nav-links">
-                <li class="active" data-tab="dashboard"><i class="fas fa-chart-line"></i> Dashboard</li>
-                <li id="resellers-tab-link" class="hidden" data-tab="resellers"><i class="fas fa-users"></i> Resellers</li>
-                <li data-tab="keys"><i class="fas fa-key"></i> Keys</li>
-                <li id="logout-btn-nav"><i class="fas fa-sign-out-alt"></i> Logout</li>
+                <li class="active" data-tab="dashboard"><i class="fas fa-gauge-high"></i><span>Dashboard</span></li>
+                <li id="resellers-tab-link" class="hidden" data-tab="resellers"><i class="fas fa-users"></i><span>Resellers</span></li>
+                <li data-tab="keys"><i class="fas fa-key"></i><span>Keys</span></li>
+            </ul>
+
+            <div class="sidebar-spacer"></div>
+
+            <ul class="nav-links nav-links-bottom">
+                <li id="logout-btn-nav"><i class="fas fa-arrow-right-from-bracket"></i><span>Sign out</span></li>
             </ul>
         </nav>
 
         <main class="content">
-            <header>
+            <header class="topbar">
+                <div>
+                    <p class="topbar-eyebrow" id="topbar-eyebrow">Dashboard</p>
+                    <h2 id="welcome-user">Welcome back</h2>
+                </div>
                 <div class="user-info">
                     <span id="user-role-badge" class="badge">Admin</span>
-                    <h2 id="welcome-user">Welcome</h2>
                 </div>
             </header>
 
-            <!-- Dashboard Overview -->
+            <!-- DASHBOARD TAB -->
             <section id="dashboard-tab" class="tab-content active">
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <i class="fas fa-key icon-bg"></i>
-                        <h3>Total Keys</h3>
+                        <div class="stat-card-top">
+                            <span class="stat-label">Total Keys</span>
+                            <i class="fas fa-key stat-icon"></i>
+                        </div>
                         <p id="stat-total-keys">0</p>
+                        <span class="stat-foot">All licenses issued</span>
                     </div>
-                    <div class="stat-card">
-                        <i class="fas fa-check-circle icon-bg"></i>
-                        <h3>Active Keys</h3>
+                    <div class="stat-card stat-card-active">
+                        <div class="stat-card-top">
+                            <span class="stat-label">Active Keys</span>
+                            <i class="fas fa-circle-check stat-icon"></i>
+                        </div>
                         <p id="stat-active-keys">0</p>
+                        <span class="stat-foot">Currently in use</span>
                     </div>
-                    <div class="stat-card">
-                        <i class="fas fa-clock icon-bg"></i>
-                        <h3>Unused Keys</h3>
+                    <div class="stat-card stat-card-unused">
+                        <div class="stat-card-top">
+                            <span class="stat-label">Unused Keys</span>
+                            <i class="fas fa-clock stat-icon"></i>
+                        </div>
                         <p id="stat-unused-keys">0</p>
+                        <span class="stat-foot">Awaiting activation</span>
                     </div>
                 </div>
             </section>
 
-            <!-- Reseller Management (Admin Only) -->
+            <!-- RESELLERS TAB -->
             <section id="resellers-tab" class="tab-content">
                 <div class="action-bar">
-                    <h3>Reseller Management</h3>
-                    <button class="primary-btn small" id="add-reseller-btn">+ Add Reseller</button>
+                    <div>
+                        <h3>Reseller Management</h3>
+                        <p class="section-sub">Accounts authorized to issue license keys</p>
+                    </div>
+                    <button class="primary-btn small" id="add-reseller-btn"><i class="fas fa-plus"></i> Add Reseller</button>
                 </div>
                 <div class="table-container">
                     <table>
@@ -84,7 +120,7 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Keys Created</th>
-                                <th>Actions</th>
+                                <th class="th-actions">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="reseller-list"></tbody>
@@ -92,10 +128,13 @@
                 </div>
             </section>
 
-            <!-- Key Management -->
+            <!-- KEYS TAB -->
             <section id="keys-tab" class="tab-content">
                 <div class="action-bar">
-                    <h3>Generated Keys</h3>
+                    <div>
+                        <h3>Generated Keys</h3>
+                        <p class="section-sub">Create and manage license keys · click a key for device details</p>
+                    </div>
                     <div class="generate-group">
                         <select id="key-duration">
                             <option value="1">1 Day</option>
@@ -103,25 +142,28 @@
                             <option value="7">7 Days</option>
                             <option value="30">30 Days</option>
                         </select>
-                        <input type="number" id="key-count" value="1" min="1" max="50">
+                        <input type="number" id="key-count" value="1" min="1" max="50" title="Number of keys">
                         <div id="trial-option-container" class="hidden trial-toggle">
                             <input type="checkbox" id="is-trial-checkbox">
-                            <label for="is-trial-checkbox">TRIAL</label>
+                            <label for="is-trial-checkbox">Trial</label>
                         </div>
-                        <button class="primary-btn small" id="generate-keys-btn">Generate</button>
+                        <button class="primary-btn small" id="generate-keys-btn"><i class="fas fa-bolt"></i> Generate</button>
                     </div>
                 </div>
-                <div class="action-bar" style="margin-top:20px;">
+
+                <div class="action-bar action-bar-tools">
                     <div class="search-group">
-                        <input type="text" id="search-key-input" placeholder="Search Key...">
-                        <button class="secondary-btn" id="search-btn"><i class="fas fa-search"></i></button>
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="search-key-input" placeholder="Search by key…">
+                        <button class="secondary-btn icon-only" id="search-btn"><i class="fas fa-arrow-right"></i></button>
                     </div>
                     <div class="pagination-controls">
-                        <button class="secondary-btn" id="prev-page-btn" disabled><i class="fas fa-chevron-left"></i></button>
+                        <button class="secondary-btn icon-only" id="prev-page-btn" disabled><i class="fas fa-chevron-left"></i></button>
                         <span id="page-number">Page 1</span>
-                        <button class="secondary-btn" id="next-page-btn"><i class="fas fa-chevron-right"></i></button>
+                        <button class="secondary-btn icon-only" id="next-page-btn"><i class="fas fa-chevron-right"></i></button>
                     </div>
                 </div>
+
                 <div class="table-container">
                     <table>
                         <thead>
@@ -129,9 +171,9 @@
                                 <th>Key</th>
                                 <th>Duration</th>
                                 <th>Status</th>
-                                <th>HWID</th>
+                                <th>Device (HWID)</th>
                                 <th>Expiry</th>
-                                <th>Actions</th>
+                                <th class="th-actions">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="keys-list"></tbody>
@@ -141,43 +183,125 @@
         </main>
     </div>
 
-    <!-- MODAL: Add Reseller -->
+    <!-- MODAL: ADD RESELLER -->
     <div id="modal-overlay" class="hidden">
         <div class="modal">
             <h3 id="modal-title">Add Reseller</h3>
             <div id="modal-body">
                 <div class="input-group">
-                    <input type="text" id="new-reseller-name" placeholder="Full Name">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="new-reseller-name" placeholder="Full name">
                 </div>
                 <div class="input-group">
-                    <input type="email" id="new-reseller-email" placeholder="Email Address">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="new-reseller-email" placeholder="Email address">
                 </div>
                 <div class="input-group">
+                    <i class="fas fa-lock"></i>
                     <input type="password" id="new-reseller-password" placeholder="Password">
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="secondary-btn" id="modal-cancel">Cancel</button>
-                <button class="primary-btn small" id="modal-confirm">Create</button>
+                <button class="primary-btn small" id="modal-confirm">Add Reseller</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL: Generated Key Result -->
-    <div id="key-result-modal" class="modal-backdrop hidden">
-        <div class="modal result-modal">
-            <i class="fas fa-check-circle success-icon"></i>
-            <h3>License Generated</h3>
-            <p id="result-duration" class="result-sub">30 Days Plan</p>
-            <div class="result-key-box">
-                <span id="generated-key-display">LION-XXXXX-XXXXX-XXXXX</span>
-                <button id="copy-key-btn" title="Copy key"><i class="fas fa-copy"></i></button>
-            </div>
-            <div class="modal-footer" style="justify-content:center;">
-                <button id="close-result-btn" class="primary-btn small">Done</button>
+    <!-- MODAL: KEY RESULT -->
+    <div id="key-result-modal" class="hidden">
+        <div id="result-modal-overlay" class="modal-overlay-fixed">
+            <div class="modal result-modal">
+                <div class="success-icon"><i class="fas fa-check"></i></div>
+                <h3 class="result-title">License Generated</h3>
+                <p id="result-duration" class="result-sub">30 Days Plan</p>
+                <div class="result-key-box">
+                    <span id="generated-key-display">TEAM18-81-XXXXX-XXXXX</span>
+                    <button id="copy-key-btn" title="Copy key"><i class="fas fa-copy"></i></button>
+                </div>
+                <div class="modal-footer modal-footer-center">
+                    <button id="close-result-btn" class="primary-btn">Done</button>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- GENERIC CONFIRM DIALOG (delete / reset device) -->
+    <div id="confirm-overlay" class="modal-overlay-fixed hidden">
+        <div id="confirm-box" class="modal confirm-modal">
+            <div id="confirm-icon" class="confirm-icon"><i class="fas fa-triangle-exclamation"></i></div>
+            <h3 id="confirm-title">Are you sure?</h3>
+            <p id="confirm-body" class="result-sub"></p>
+            <div class="modal-footer modal-footer-center">
+                <button class="secondary-btn" id="confirm-cancel-btn">Cancel</button>
+                <button class="primary-btn small" id="confirm-action-btn">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- KEY DETAIL DRAWER -->
+    <div id="detail-overlay" class="modal-overlay-fixed hidden">
+        <div class="modal detail-modal">
+            <div class="detail-header">
+                <div>
+                    <p class="topbar-eyebrow">License Key</p>
+                    <h3 id="detail-key" class="detail-key-title">TEAM18-81-XXXXX-XXXXX</h3>
+                </div>
+                <button id="detail-close-btn" class="secondary-btn icon-only" title="Close"><i class="fas fa-xmark"></i></button>
+            </div>
+
+            <div class="detail-grid">
+                <div class="detail-field">
+                    <span class="detail-label">Status</span>
+                    <span id="detail-status">—</span>
+                </div>
+                <div class="detail-field">
+                    <span class="detail-label">Linked device</span>
+                    <span id="detail-hwid" class="mono-value">—</span>
+                </div>
+                <div class="detail-field">
+                    <span class="detail-label">Device bound at</span>
+                    <span id="detail-bound-at">—</span>
+                </div>
+                <div class="detail-field">
+                    <span class="detail-label">Last seen</span>
+                    <span id="detail-last-seen">—</span>
+                </div>
+                <div class="detail-field">
+                    <span class="detail-label">Created</span>
+                    <span id="detail-created">—</span>
+                </div>
+                <div class="detail-field">
+                    <span class="detail-label">First activated</span>
+                    <span id="detail-activated">—</span>
+                </div>
+                <div class="detail-field">
+                    <span class="detail-label">Expiry</span>
+                    <span id="detail-expiry">—</span>
+                </div>
+                <div class="detail-field">
+                    <span class="detail-label">Resets used</span>
+                    <span id="detail-reset-count">—</span>
+                </div>
+                <div class="detail-field">
+                    <span class="detail-label">Last reset</span>
+                    <span id="detail-last-reset">—</span>
+                </div>
+            </div>
+
+            <button id="detail-reset-btn" class="primary-btn btn-danger detail-reset-btn">
+                <i class="fas fa-arrows-rotate"></i> Reset Device
+            </button>
+
+            <div class="detail-history">
+                <p class="detail-label detail-history-label">Reset history</p>
+                <ul id="detail-history-list" class="history-list"></ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOASTS -->
+    <div id="toast-host" class="toast-host"></div>
 
     <script type="module" src="app.js"></script>
 </body>

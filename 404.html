@@ -1,33 +1,159 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Page Not Found</title>
+    <title>Page Not Found | Hemn Mood</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+      :root {
+        --accent: #ffb020;
+        --accent-dim: rgba(255, 176, 32, 0.14);
+        --bg: #0a0c10;
+        --bg-elevated: #10131a;
+        --panel: #12151c;
+        --border: rgba(255, 255, 255, 0.07);
+        --border-strong: rgba(255, 255, 255, 0.14);
+        --text: #eef0f4;
+        --text-dim: #8890a0;
+        --text-faint: #565d6d;
+      }
 
-    <style media="screen">
-      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px 16px; border-radius: 3px; }
-      #message h3 { color: #888; font-weight: normal; font-size: 16px; margin: 16px 0 12px; }
-      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
-      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-      @media (max-width: 600px) {
-        body, #message { margin-top: 0; background: white; box-shadow: none; }
-        body { border-top: 16px solid #ffa100; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Space Grotesk', sans-serif;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      body::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+        background-size: 42px 42px;
+        mask-image: radial-gradient(ellipse 60% 60% at 50% 40%, black 0%, transparent 75%);
+      }
+
+      body::after {
+        content: '';
+        position: absolute;
+        top: -10%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 700px;
+        height: 400px;
+        background: radial-gradient(ellipse, var(--accent-dim) 0%, transparent 70%);
+      }
+
+      #message {
+        position: relative;
+        background: linear-gradient(180deg, var(--bg-elevated), var(--panel));
+        max-width: 420px;
+        width: 100%;
+        margin: 20px;
+        padding: 44px 40px;
+        border-radius: 18px;
+        border: 1px solid var(--border);
+        box-shadow: 0 30px 60px -20px rgba(0,0,0,0.6);
+        text-align: center;
+      }
+
+      .code-glyph {
+        width: 56px;
+        height: 56px;
+        margin: 0 auto 20px;
+        border-radius: 12px;
+        background: var(--accent-dim);
+        border: 1px solid rgba(255, 176, 32, 0.25);
+        color: var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+      }
+
+      #message h2 {
+        font-family: 'JetBrains Mono', monospace;
+        color: var(--accent);
+        font-weight: 700;
+        font-size: 0.8rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+
+      #message h1 {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 14px;
+      }
+
+      #message p {
+        line-height: 1.55;
+        margin-bottom: 22px;
+        font-size: 0.88rem;
+        color: var(--text-dim);
+      }
+
+      #message a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background: var(--accent);
+        text-decoration: none;
+        color: #1a1200;
+        font-weight: 600;
+        font-size: 0.88rem;
+        padding: 13px 22px;
+        border-radius: 8px;
+        transition: filter 0.15s, transform 0.15s;
+      }
+
+      #message a:hover { filter: brightness(1.08); transform: translateY(-1px); }
+
+      .divider {
+        border-top: 1px solid var(--border);
+        margin: 26px 0 18px;
+      }
+
+      #load {
+        color: var(--text-faint);
+        font-size: 0.76rem;
+        line-height: 1.5;
+      }
+
+      #load code {
+        font-family: 'JetBrains Mono', monospace;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        padding: 1px 6px;
+        border-radius: 4px;
+        color: var(--text-dim);
       }
     </style>
   </head>
   <body>
     <div id="message">
-      <h2>404</h2>
-      <h1>Page Not Found</h1>
-      <p>The specified file was not found on this website. Please check the URL for mistakes and try again.</p>
-      <h3>Why am I seeing this?</h3>
-      <p>This page was generated by the Firebase Command-Line Interface. To modify it, edit the <code>404.html</code> file in your project's configured <code>public</code> directory.</p>
+      <div class="code-glyph"><i class="fas fa-triangle-exclamation"></i></div>
+      <h2>Error 404</h2>
+      <h1>Page not found</h1>
+      <p>The page you're looking for doesn't exist or may have moved. Check the URL, or head back to the console.</p>
+      <a href="/"><i class="fas fa-arrow-left"></i> Back to console</a>
+      <div class="divider"></div>
+      <p id="load">Generated by the Firebase CLI. Edit <code>404.html</code> in your project's <code>public</code> directory to customize this page.</p>
     </div>
   </body>
 </html>

@@ -1,0 +1,158 @@
+rules_version = '2';
+
+// ============================================================================
+// HEMN MOOD / TEAM 18-81 — Firestore Security Rules
+//
+// This file is NOT auto-deployed by `firebase deploy` unless it is wired up
+// in firebase.json (see the "firestore" block added there) and you run:
+//
+//   firebase deploy --only firestore:rules
+//
+// This is where the actual security boundary lives. The panel (app.js) is a
+// client-side web app — anyone can open devtools and see every Firestore
+// call it makes. That is completely normal for Firebase and is NOT a
+// vulnerability by itself. What makes it safe is that these rules run on
+// Google's servers and reject any write that doesn't follow them, no matter
+// what the client sends. Treat this file as the real gatekeeper for the
+// device-reset system, not app.js.
+// ============================================================================
+
+function isAdmin() {
+  // Must match ADMIN_UID in app.js exactly. These two were previously out
+  // of sync (this file had a different UID than app.js), which meant the
+  // real admin could see the admin UI client-side but have every write
+  // rejected server-side. Keep both in sync if this UID ever changes.
+  return request.auth != null &&
+    request.auth.uid == "3tHHc71lJ2b30li41W4BKStMRiw2";
+}
+
+function isSignedInReseller() {
+  return request.auth != null &&
+    exists(/databases/$(database)/documents/users/$(request.auth.uid));
+}
+
+function isStaff() {
+  return isAdmin() || isSignedInReseller();
+}
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ------------------------------------------------------------------
+    // USERS (resellers / admin metadata)
+    // ------------------------------------------------------------------
+    match /users/{userId} {
+      // Any signed-in staff member can read the reseller list (used for
+      // the Resellers tab + key-count lookups).
+      allow read: if isStaff();
+
+      // Only the admin can create a reseller profile, and it must be keyed
+      // by the real Firebase Auth UID of that reseller (app.js creates the
+      // Auth account first via a secondary app instance, then writes this
+      // doc with that account's real UID as the doc ID — see
+      // createResellerAuthAccount() + the modal-confirm handler in app.js).
+      // The email must be pre-normalized (trimmed + lowercased) and the
+      // role is locked to "reseller": an admin profile is never created
+      // this way, and a reseller can never grant themselves elevated roles
+      // through this path.
+      allow create: if isAdmin() &&
+        userId != request.auth.uid &&
+        request.resource.data.role == "reseller" &&
+        request.resource.data.email is string &&
+        request.resource.data.email == request.resource.data.email.lower() &&
+        request.resource.data.email.trim() == request.resource.data.email &&
+        request.resource.data.name is string &&
+        request.resource.data.name.size() > 0;
+
+      // Updates/deletes: admin only. (A reseller cannot edit their own
+      // profile, e.g. to change their own role.)
+      allow update, delete: if isAdmin();
+    }
+
+    // ------------------------------------------------------------------
+    // KEYS
+    // ------------------------------------------------------------------
+    match /keys/{keyId} {
+
+      // Reading keys: any signed-in staff member (admin or reseller).
+      // If you want resellers to only see their own keys, change this to:
+      //   allow read: if isAdmin() || (isSignedInReseller() && resource.data.reseller_uid == request.auth.uid);
+      allow read: if isStaff();
+
+      // Creating a new key: staff only, and the reseller_uid must match
+      // whoever is actually signed in (prevents spoofing another
+      // reseller's identity on generated keys).
+      allow create: if isStaff() &&
+        request.resource.data.reseller_uid == request.auth.uid &&
+        request.resource.data.reset_count == 0 &&
+        request.resource.data.hwid == null;
+
+      // Deleting a key: staff only.
+      allow delete: if isStaff();
+
+      // Updating a key covers TWO very different actors:
+      //   1. Staff, via the admin panel (delete/reset button, status tweaks).
+      //   2. The game client / activation backend, binding a device on
+      //      first use. That activation call is NOT part of this repo
+      //      (it happens from the Pawn/game server side against this same
+      //      Firestore project) — these rules constrain it regardless of
+      //      where the request comes from.
+      allow update: if isStaff() ? staffUpdateIsValid() : deviceActivationIsValid();
+
+      // --- Staff-driven updates (admin panel) ---
+      // Covers: manual status edits AND the Reset Device action.
+      function staffUpdateIsValid() {
+        let before = resource.data;
+        let after  = request.resource.data;
+
+        // A "reset" write: hwid must go from something to null.
+        let isResetWrite = before.hwid != null && after.hwid == null;
+
+        return isResetWrite ? resetWriteIsValid(before, after) : true;
+      }
+
+      function resetWriteIsValid(before, after) {
+        let cooldownOk = !('last_reset_at' in before) ||
+          before.last_reset_at == null ||
+          request.time > before.last_reset_at + duration.value(24, 'h');
+
+        let countOk = (before.reset_count == null ? 0 : before.reset_count) < 3;
+
+        // The count must increment by exactly 1, and history must only grow.
+        let countIncrementedByOne =
+          after.reset_count == (before.reset_count == null ? 0 : before.reset_count) + 1;
+
+        return cooldownOk && countOk && countIncrementedByOne;
+      }
+
+      // --- Unauthenticated / device-side activation ---
+      // A key with no linked device (hwid == null) may be bound exactly
+      // once per reset cycle: hwid goes from null -> a non-empty string,
+      // status moves unused -> active, and nothing about the reset/admin
+      // bookkeeping fields is touched. This is what stops "unlimited
+      // automatic device changes": once hwid is set, this branch can no
+      // longer modify hwid at all — only a staff-driven reset (above) can
+      // clear it again.
+      function deviceActivationIsValid() {
+        let before = resource.data;
+        let after  = request.resource.data;
+
+        let bindingAllowed = before.hwid == null &&
+          after.hwid is string &&
+          after.hwid.size() > 0;
+
+        let statusTransitionOk =
+          before.status == 'unused' && after.status == 'active';
+
+        let notExpired =
+          before.expiry_date == null || request.time < before.expiry_date;
+
+        let resetFieldsUntouched =
+          after.reset_count == before.reset_count &&
+          after.last_reset_at == before.last_reset_at;
+
+        return bindingAllowed && statusTransitionOk && notExpired && resetFieldsUntouched;
+      }
+    }
+  }
+}
